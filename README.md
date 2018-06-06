@@ -1,6 +1,6 @@
 **🚧 This project is in early development stage and it could change significantly in the future.**
 
-# Lepre Routing [![Build Status](https://travis-ci.org/leprephp/twig-bridge.svg?branch=master)](https://travis-ci.org/leprephp/twig-bridge)
+# Lepre Twig Bridge [![Build Status](https://travis-ci.org/leprephp/twig-bridge.svg?branch=master)](https://travis-ci.org/leprephp/twig-bridge)
 
 The bridge between Lepre Framework and [Twig Template Engine][twig]
 
