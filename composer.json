@@ -1,0 +1,36 @@
+{
+    "name": "lepre/twig-bridge",
+    "description": "Lepre Twig Bridge",
+    "homepage": "https://github.com/leprephp/twig-bridge",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniele De Nobili",
+            "email": "danieledenobili@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "lepre/di": "dev-master",
+        "twig/twig": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4 || ^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lepre\\Bridge\\Twig\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lepre\\Bridge\\Twig\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "phpunit"
+        ]
+    }
+}
