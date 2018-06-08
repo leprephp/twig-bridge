@@ -23,10 +23,39 @@ class TwigServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $container->set('twig', function () {
+        $container->set('twig', function (Container $container) {
             return new \Twig_Environment(
-                new \Twig_Loader_Array()
+                $container->get('twig.loader')
             );
+        });
+
+        $container->alias('twig.loader', 'twig.loader.chain');
+
+        $container->set('twig.loader.array', function (Container $container) {
+            return new \Twig_Loader_Array(
+                $container->get('twig.templates')
+            );
+        });
+
+        $container->set('twig.loader.filesystem', function (Container $container) {
+            return new \Twig_Loader_Filesystem(
+                $container->get('twig.paths')
+            );
+        });
+
+        $container->set('twig.loader.chain', function (Container $container) {
+            return new \Twig_Loader_Chain([
+                $container->get('twig.loader.array'),
+                $container->get('twig.loader.filesystem'),
+            ]);
+        });
+
+        $container->set('twig.templates', function () {
+            return [];
+        });
+
+        $container->set('twig.paths', function () {
+            return [];
         });
     }
 }
