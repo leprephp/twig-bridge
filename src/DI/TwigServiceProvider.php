@@ -19,7 +19,7 @@ use Lepre\DI\ServiceProviderInterface;
 /**
  * TwigServiceProvider
  */
-class TwigServiceProvider implements ServiceProviderInterface
+final class TwigServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
