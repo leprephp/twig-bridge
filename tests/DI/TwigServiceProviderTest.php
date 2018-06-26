@@ -96,4 +96,100 @@ class TwigServiceProviderTest extends TestCase
             $container->get('twig')->render('@theme/hello.twig', ['name' => 'John'])
         );
     }
+
+    public function testTwigOptions()
+    {
+        $container = new Container();
+        $container->register(new TwigServiceProvider());
+
+        $container->set('twig.options', [
+            'debug'            => true,
+            'cache'            => __DIR__ . '/cache',
+            'auto_reload'      => false,
+            'strict_variables' => false,
+            'charset'          => 'ISO-8859-1',
+        ]);
+
+        /** @var \Twig_Environment $twig */
+        $twig = $container->get('twig');
+
+        $this->assertTrue($twig->isDebug());
+        $this->assertEquals(__DIR__ . '/cache', $twig->getCache());
+        $this->assertFalse($twig->isAutoReload());
+        $this->assertFalse($twig->isStrictVariables());
+        $this->assertEquals('ISO-8859-1', $twig->getCharset());
+    }
+
+    public function testHonorsContainerDebug()
+    {
+        $container = new Container();
+        $container->register(new TwigServiceProvider());
+
+        $container->set('debug', true);
+
+        /** @var \Twig_Environment $twig */
+        $twig = $container->get('twig');
+        $this->assertTrue($twig->isDebug());
+        $this->assertTrue($twig->isStrictVariables());
+
+        // debug extension
+        $this->assertTrue($twig->hasExtension(\Twig_Extension_Debug::class));
+    }
+
+    public function testHonorsTwigOptionsDebug()
+    {
+        $container = new Container();
+        $container->register(new TwigServiceProvider());
+
+        $container->set('debug', true);
+        $container->extend('twig.options', function (array $options) {
+            $options['debug'] = false;
+
+            return $options;
+        });
+
+        /** @var \Twig_Environment $twig */
+        $twig = $container->get('twig');
+        $this->assertFalse($twig->isDebug());
+        $this->assertFalse($twig->isStrictVariables());
+
+        // debug extension
+        $this->assertFalse($twig->hasExtension(\Twig_Extension_Debug::class));
+    }
+
+    public function testAutoReloadDependsOnEnvironment()
+    {
+        $container = new Container();
+        $container->register(new TwigServiceProvider());
+
+        /** @var \Twig_Environment $twig */
+        $twig = $container->getNew('twig');
+        $this->assertFalse($twig->isAutoReload());
+
+        $container->set('debug', true);
+
+        /** @var \Twig_Environment $twig */
+        $twig = $container->getNew('twig');
+        $this->assertTrue($twig->isAutoReload());
+
+        $container->set('environment', 'production');
+
+        /** @var \Twig_Environment $twig */
+        $twig = $container->getNew('twig');
+        $this->assertFalse($twig->isAutoReload());
+
+        $container->set('debug', false);
+        $container->set('environment', 'development');
+
+        /** @var \Twig_Environment $twig */
+        $twig = $container->getNew('twig');
+        $this->assertTrue($twig->isAutoReload());
+
+        $container->set('debug', true);
+        $container->set('environment', 'production');
+
+        /** @var \Twig_Environment $twig */
+        $twig = $container->getNew('twig');
+        $this->assertFalse($twig->isAutoReload());
+    }
 }

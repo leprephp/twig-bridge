@@ -24,12 +24,39 @@ class TwigServiceProvider implements ServiceProviderInterface
     public function register(Container $container)
     {
         $container->set('twig', function (Container $container) {
-            return new \Twig_Environment(
-                $container->get('twig.loader')
+            $options = $container->get('twig.options');
+
+            if (!isset($options['debug'])) {
+                $options['debug'] = $container->has('debug') ? $container->get('debug') : false;
+            }
+
+            if (!isset($options['strict_variables'])) {
+                $options['strict_variables'] = $options['debug'];
+            }
+
+            if (!isset($options['auto_reload'])) {
+                if ($container->has('environment')) {
+                    $options['auto_reload'] = $container->get('environment') === 'development';
+                } else {
+                    $options['auto_reload'] = $options['debug'];
+                }
+            }
+
+            $twig = new \Twig_Environment(
+                $container->get('twig.loader'),
+                $options
             );
+
+            if (isset($options['debug']) && $options['debug']) {
+                $twig->addExtension(new \Twig_Extension_Debug());
+            }
+
+            return $twig;
         });
 
         $container->alias('twig.loader', 'twig.loader.chain');
+
+        $container->set('twig.options', []);
 
         $container->set('twig.loader.array', function (Container $container) {
             return new \Twig_Loader_Array(
