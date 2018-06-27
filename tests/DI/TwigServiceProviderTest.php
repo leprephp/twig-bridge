@@ -17,7 +17,7 @@ use Lepre\Bridge\Twig\DI\TwigServiceProvider;
 use Lepre\DI\Container;
 use PHPUnit\Framework\TestCase;
 
-class TwigServiceProviderTest extends TestCase
+final class TwigServiceProviderTest extends TestCase
 {
     public function testRegister()
     {
