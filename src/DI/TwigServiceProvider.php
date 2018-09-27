@@ -52,7 +52,7 @@ final class TwigServiceProvider implements ServiceProviderInterface
                 $options
             );
 
-            if (isset($options['debug']) && $options['debug']) {
+            if ($options['debug']) {
                 $twig->addExtension(new \Twig_Extension_Debug());
             }
 
