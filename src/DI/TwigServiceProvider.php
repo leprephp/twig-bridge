@@ -17,10 +17,15 @@ use Lepre\DI\Container;
 use Lepre\DI\ServiceProviderInterface;
 
 /**
- * TwigServiceProvider
+ * Twig integration for Lepre.
+ *
+ * @author Daniele De Nobili <danieledenobili@gmail.com>
  */
 final class TwigServiceProvider implements ServiceProviderInterface
 {
+    /**
+     * @inheritDoc
+     */
     public function register(Container $container)
     {
         $container->set('twig', function (Container $container) {
