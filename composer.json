@@ -1,15 +1,26 @@
 {
     "name": "lepre/twig-bridge",
     "description": "Lepre Twig Bridge",
+    "keywords": [
+        "twig",
+        "twig bridge",
+        "lepre bridge",
+        "template engine"
+    ],
     "homepage": "https://github.com/leprephp/twig-bridge",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Daniele De Nobili",
-            "email": "danieledenobili@gmail.com"
+            "email": "danieledenobili@gmail.com",
+            "role": "Developer"
         }
     ],
+    "support": {
+        "source": "https://github.com/leprephp/twig-bridge",
+        "issues": "https://github.com/leprephp/twig-bridge/issues"
+    },
     "require": {
         "php": "^7.1",
         "lepre/di": "dev-master",
