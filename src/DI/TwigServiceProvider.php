@@ -26,7 +26,7 @@ final class TwigServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container->set('twig', function (Container $container) {
             $options = $container->get('twig.options');
